@@ -1,0 +1,23 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+
+
+*.db
+/dependencies/scripts/output
+/Debug
+/Release
+/ARM
+/PixelEffect/PixelEffect.Android/ARM/Debug
+/PixelEffect/PixelEffect.Android/ARM/Release
+/PixelEffect/PixelEffect.ModelImporter/Debug
+/PixelEffect/PixelEffect.ModelImporter/Release
+/PixelEffect/PixelEffect.Windows/Release
+/PixelEffect/PixelEffect.Windows/Debug
+/WindowsApp/Debug
+/WindowsApp/Release
+/AndroidApp/.gradle
+/AndroidApp/.idea
+/AndroidApp/app/build
