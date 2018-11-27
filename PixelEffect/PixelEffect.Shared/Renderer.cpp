@@ -11,12 +11,14 @@
 #include "OpenML/Rectangle2D.h"
 #include "Panel.h"
 
+/*
 #include "opencv2/core.hpp"
 #include "opencv2/calib3d/calib3d.hpp"
 #include "opencv2/features2d.hpp"
 #include "opencv2/imgproc.hpp"
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui/highgui.hpp>
+*/
 
 #include <OpenML/SystemOfLinearEquations.h>
 
@@ -116,6 +118,7 @@ Mat3f getPerspectiveTransform(Vec2f sourcePoints[4], Vec2f targetPoints[4])
 	return result;
 }
 
+/*
 //retorna matriz de transformação afim
 Mat3f getAffineTransform(std::vector<Vec2f> sourcePoints)
 {
@@ -146,7 +149,7 @@ Mat3f getAffineTransform(std::vector<Vec2f> sourcePoints)
 		cv::Point2f(0.0f,0.0f),
 		cv::Point2f(505.0f, 4.0f)
 	};
-	*/
+	/
 
 	cv::Mat mat = cv::getAffineTransform(src, targetPoints);
 
@@ -166,6 +169,7 @@ Mat3f getAffineTransform(std::vector<Vec2f> sourcePoints)
 
 	return result;
 }
+*/
 
 OpenML::Line2Df* Renderer::getVanishLine() 
 {
