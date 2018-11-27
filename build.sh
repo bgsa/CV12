@@ -4,3 +4,4 @@ cd build
 cmake ..
 cmake --build .
 cd ..
+cp -R ./resources ./build/
