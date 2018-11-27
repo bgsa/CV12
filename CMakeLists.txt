@@ -6,13 +6,13 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-#set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 find_package(OpenGL   REQUIRED)
 find_package(GLEW     REQUIRED)
 find_package(ZLIB     REQUIRED)
-find_package(PNG      REQUIRED)
-#find_package(OpenCV REQUIRED COMPONENTS core imgproc highgui calib3d)
+find_package(PNG REQUIRED)
 
 if (UNIX)
     find_package(PkgConfig REQUIRED)  # find GLFW library
@@ -99,8 +99,6 @@ if (WIN32)
 		${OPENGL_LIBRARY}
 		glfw3.lib
 		glew32s.lib
-		zlib.lib
-		libpng16.lib
 		${PROJECT_NAME}WindowsLib)
 endif()
 
@@ -114,15 +112,12 @@ if (UNIX)
 	set_target_properties(${PROJECT_NAME}LinuxApp PROPERTIES ENABLE_EXPORTS ON)
 
 	target_link_libraries(${PROJECT_NAME}LinuxApp
-		${OPENGL_LIBRARY}
-		${GLFW_STATIC_LIBRARIES}
+		${GLFW_LIBRARIES}
 		${GLEW_LIBRARIES}
 		${ZLIB_LIBRARIES}
 		${PNG_LIBRARIES}
-#		${OpenCV_LIBS}
-		${PROJECT_NAME}LinuxLib)
+		${PROJECT_NAME}LinuxLib
+		${OPENGL_LIBRARY})
 endif()
-
-
 
 MESSAGE(STATUS "COMPLETED !" )

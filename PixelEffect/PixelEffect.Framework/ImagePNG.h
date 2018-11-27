@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdlib.h>
-#include <PNG\png.h>
+#include <PNG/png.h>
 #include "Log.h"
 #include "Image.h"
 
@@ -49,6 +49,9 @@ public:
 	{
 #ifdef WINDOWS
 		fclose( (FILE *) file);
+#endif
+#ifdef UNIX
+		close( file);
 #endif
 #ifdef ANDROID
 		AAsset_close( (AAsset *) file );
