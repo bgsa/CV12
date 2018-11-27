@@ -14,50 +14,47 @@ class ImagePNG : public Image
 {
 private:
 
-public:	
+public:
 	ColorRGBc getPixelRGB(int x, int y);
-	
-	static GLenum getGlColorFormat(const int pngColorFormat) 
+
+	static GLenum getGlColorFormat(const int pngColorFormat)
 	{
 		switch (pngColorFormat)
 		{
-			case PNG_COLOR_TYPE_GRAY:
-				return GL_LUMINANCE;
+		case PNG_COLOR_TYPE_GRAY:
+			return GL_LUMINANCE;
 
-			case PNG_COLOR_TYPE_RGB:
-				return GL_RGB;
+		case PNG_COLOR_TYPE_RGB:
+			return GL_RGB;
 
-			case PNG_COLOR_TYPE_RGB_ALPHA:
-				return GL_RGBA;
+		case PNG_COLOR_TYPE_RGB_ALPHA:
+			return GL_RGBA;
 
-			case PNG_COLOR_TYPE_GRAY_ALPHA:
-				return GL_LUMINANCE_ALPHA;
+		case PNG_COLOR_TYPE_GRAY_ALPHA:
+			return GL_LUMINANCE_ALPHA;
 		}
 
 		return 0;
 	}
 
 #ifdef ANDROID
-	static void png_asset_read(png_structp png_ptr, png_bytep data, png_size_t length) 
+	static void png_asset_read(png_structp png_ptr, png_bytep data, png_size_t length)
 	{
-		AAsset* file = (AAsset*) png_get_io_ptr(png_ptr);
+		AAsset* file = (AAsset*)png_get_io_ptr(png_ptr);
 		AAsset_read(file, data, length);
 	}
 #endif
 
-	static void closeFile(void * file) 
+	static void closeFile(void * file)
 	{
-#ifdef WINDOWS
-		fclose( (FILE *) file);
-#endif
-#ifdef UNIX
-		close( file);
+#if defined(WINDOWS) || defined(LINUX) || defined(MAC) || defined(UNIX)
+		fclose((FILE *)file);
 #endif
 #ifdef ANDROID
-		AAsset_close( (AAsset *) file );
+		AAsset_close((AAsset *)file);
 #endif
 	}
-		
+
 	static ImagePNG * load(const char * filename)
 	{
 		png_byte header[8];
@@ -72,7 +69,7 @@ public:
 		//read the header
 		AAsset_read(file, header, 8);
 #endif
-#ifdef WINDOWS
+#if defined(WINDOWS) || defined(LINUX) || defined(MAC) || defined(UNIX)
 		FILE *file = fopen(filename, "rb");
 		fread(header, 1, 8, file);
 #endif
@@ -106,14 +103,20 @@ public:
 			return 0;
 		}
 
-		// the code in this if statement gets called if libpng encounters an error
-		if (setjmp(png_jmpbuf(png_ptr))) {
-			Log::error("error from libpng");
-			png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
-			closeFile(file);
-			return 0;
-		}
-		
+		/* this code have a problem with libpng version -
+		//the first IF works on libpng16 and
+		the second IF SHOULD work on libpng12
+				// the code in this if statement gets called if libpng encounters an error
+				//if (setjmp(png_jmpbuf(png_ptr)))
+				//if (setjmp(png_ptr->jmpbuf))  // Warning is unavoidable if #define PNG_DEPSTRUCT is not present
+				{
+					Log::error("error from libpng");
+					png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
+					closeFile(file);
+					return 0;
+				}
+		*/
+
 #ifdef ANDROID
 		png_set_read_fn(png_ptr, file, png_asset_read);
 #endif				
@@ -135,10 +138,10 @@ public:
 		png_read_update_info(png_ptr, info_ptr);
 
 		// Row size in bytes.
-		int rowbytes = png_get_rowbytes(png_ptr, info_ptr); //android
-		
+		size_t rowbytes = png_get_rowbytes(png_ptr, info_ptr); //android
+
 		// Allocate the image_data as a big block, to be given to opengl
-		png_byte * data = (png_byte *) malloc(rowbytes * height * sizeof(png_byte) + 15);
+		png_byte * data = (png_byte *)malloc(rowbytes * height * sizeof(png_byte) + 15);
 		if (data == NULL)
 		{
 			fprintf(stderr, "error: could not allocate memory for PNG image data\n");
@@ -148,7 +151,7 @@ public:
 		}
 
 		// row_pointers is for pointing to image_data for reading the png with libpng
-		png_bytep * row_pointers = (png_bytep *) malloc(height * sizeof(png_bytep));
+		png_bytep * row_pointers = (png_bytep *)malloc(height * sizeof(png_bytep));
 		if (row_pointers == NULL)
 		{
 			fprintf(stderr, "error: could not allocate memory for PNG row pointers\n");
