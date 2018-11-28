@@ -71,9 +71,7 @@ public:
 #endif
 #if defined(WINDOWS) || defined(LINUX) || defined(MAC) || defined(UNIX)
 		FILE *file = fopen(filename, "rb");
-		cout << "a0" << endl;
 		fread(header, 1, 8, file);
-		cout << "a1" << endl;
 #endif
 
 		//create png struct
@@ -122,23 +120,16 @@ public:
 
 #ifdef ANDROID
 		png_set_read_fn(png_ptr, file, png_asset_read);
-#endif				
-//#ifdef WINDOWS
-		// init png reading  (ONLY WINDOWS)
+#else
 		png_init_io(png_ptr, file);
-//#endif
-		cout << "a2.1" << endl;
+#endif				
 
 		//let libpng know you already read the first 8 bytes
 		png_set_sig_bytes(png_ptr, 8);
-
-		cout << "a2.2" << endl;
-
+		
 		// read all the info up to the image data
 		png_read_info(png_ptr, info_ptr);
-
-		cout << "a3" << endl;
-
+		
 		// get info about png
 		png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, NULL, NULL, NULL);
 
@@ -147,9 +138,7 @@ public:
 
 		// Row size in bytes.
 		size_t rowbytes = png_get_rowbytes(png_ptr, info_ptr); //android
-
-		cout << "a4" << endl;
-
+		
 		// Allocate the image_data as a big block, to be given to opengl
 		png_byte * data = (png_byte *)malloc(rowbytes * height * sizeof(png_byte) + 15);
 		if (data == NULL)
@@ -170,9 +159,7 @@ public:
 			closeFile(file);
 			return 0;
 		}
-
-		cout << "a5" << endl;
-
+		
 		// set the individual row_pointers to point at the correct offsets of image_data
 		for (unsigned int i = 0; i < height; i++)
 			row_pointers[height - 1 - i] = data + i * rowbytes;
@@ -183,21 +170,15 @@ public:
 		// clean up
 		png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
 		free(row_pointers);
-
-		cout << "a6" << endl;
-
+		
 		closeFile(file);
-
-		cout << "a7" << endl;
-
+		
 		ImagePNG *image = new ImagePNG;
 		image->width = width;
 		image->height = height;
 		image->data = data;
 		image->colorFormat = getGlColorFormat(color_type);
-
-		cout << "a8" << endl;
-
+		
 		return image;
 	}
 

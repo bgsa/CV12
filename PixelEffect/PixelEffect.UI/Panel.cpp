@@ -110,19 +110,12 @@ void Panel::setUpTextureAttribute()
 
 void Panel::setUpImage(string filename)
 {
-	cout << "i1" << endl;
-
-	cout << filename << endl;
-
 	Image *image = ImageFactory::load(filename.c_str());
-	cout << "i1.1" << endl;
 	unsigned char* pixels = image->getData();
 	GLsizei width = image->getWidth();
 	GLsizei height = image->getHeight();
 	GLenum colorFormat = image->getColorFormat();
-
-	cout << "i2" << endl;
-
+	
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
@@ -164,8 +157,6 @@ bool Panel::hasBackgroundImage()
 
 void Panel::initVBO()
 {	
-	cout << "vbo1" << endl;
-
 	glGenBuffers(1, &vertexBufferObject);  //aloca o buffr
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject); //associa o bufffer ao ponteiro
 	glBufferData(GL_ARRAY_BUFFER, sizeof(PanelShaderAttributes), &panelAttributes, GL_STATIC_DRAW);  //insere os dados no buffer para usar glDraw*
@@ -173,7 +164,6 @@ void Panel::initVBO()
 	projectionViewLocation = glGetUniformLocation(programShader, "projectionView");
 	modelViewLocation = glGetUniformLocation(programShader, "model");	
 	colorLocation = glGetUniformLocation(programShader, "Color");
-	cout << "vbo2" << endl;
 	
 	positionAttribute = glGetAttribLocation(programShader, "Position");
 	textureAttribute = glGetAttribLocation(programShader, "Texture");
@@ -181,18 +171,11 @@ void Panel::initVBO()
 	useHomographyLocation = glGetUniformLocation(programShader, "useHomography");
 	inverseHomographyMatrixLocation = glGetUniformLocation(programShader, "inverseHomographyMatrix");
 	
-	setUpPositionAttribute();
-
-	cout << "vbo3" << endl;
-
+	setUpPositionAttribute();	
 	setUpTextureAttribute();
-
-	cout << "vbo4" << endl;
-		
+			
 	if (hasBackgroundImage())
 		setUpImage(backgroundImage);
-
-	cout << "vbo5" << endl;
 }
 
 void Panel::render(Mat4f projectionViewMatrix)

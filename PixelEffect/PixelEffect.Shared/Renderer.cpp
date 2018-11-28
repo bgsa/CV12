@@ -625,9 +625,7 @@ void Renderer::resize(int width, int height)
 void Renderer::init(DisplayDevice* displayDevice)
 {
 	this->displayDevice = displayDevice;
-
-	cout << "t1" << endl;
-
+	
 	Log::info("OpenGL Vendor: " + GLConfig::getGLVendor());
 	Log::info("OpenGL Version: " + GLConfig::getGLVersion());
 	Log::info("OpenGLSL Version: " + GLConfig::getGLShadingLanguageVersion());
@@ -638,9 +636,7 @@ void Renderer::init(DisplayDevice* displayDevice)
 		Log::info(extension);
 
 	timer.start();
-
-	cout << "t2" << endl;
-
+	
 	//glEnable(GL_CULL_FACE); //elimina os vértices que estão sendo renderizados atrás de outros vértices. Ex.: modelo 3D
 	glEnable(GL_DEPTH_TEST); //elimina os vértices que sobrepoem outros vértices quando estão no mesmo eixo Z.
 	glEnable(GL_BLEND);									  //enable alpha color
@@ -649,13 +645,9 @@ void Renderer::init(DisplayDevice* displayDevice)
 	Vec3f cameraPosition = { 0.0f, 5.0f, 10.0f };
 	Vec3f cameraTarget = { 0.0f, 3.0f, 0.0f };
 	camera.init(cameraPosition, cameraTarget);
-
-	cout << "t3" << endl;
-
+	
 	panel = new Panel;
-
-	cout << "t4" << endl;
-
+	
 	if (homeworkMode == 1.0f)
 		panel->setBackgroundImage("resources/images/brahma01.png");
 	else if (homeworkMode == 2.0f) 
@@ -670,10 +662,7 @@ void Renderer::init(DisplayDevice* displayDevice)
 		panel->setBackgroundImage("resources/images/wall25.png");
 	}
 
-	cout << "t5" << endl;
-
 	panel->init();
-	cout << "t6" << endl;
 	graphicObjects.push_back(panel);
 }
 
