@@ -26,6 +26,10 @@ protected:
 	void render3D(Mat4f projectionViewMatrix);
 
 public:
+	float homeworkMode = 1.0f;
+	int step = 1;
+	bool isDebug = false;
+
 	void init(DisplayDevice* displayDevice);
 	void start();
 	void resize(int width, int height);

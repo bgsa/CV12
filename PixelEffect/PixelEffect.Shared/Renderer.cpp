@@ -35,10 +35,6 @@ Vec3f l = Vec3f(8.47174670e-06f, -0.000845056260f, 1.0f);
 
 SystemOfLinearEquations<float> linearEquation;
 
-//float homeworkMode = 2.5f;
-float homeworkMode = 2.0f;
-int step = 1;
-
 Mat3f mHp = {
 	1.0f, 0.0f, 0.0f,
 	0.0f, 1.0f, 0.0f,
@@ -255,13 +251,16 @@ void Renderer::onKeyDown(int keyCode)
 	{
 		if (step == 1) 
 		{	
-			OpenML::Line2Df* vanishLine = getVanishLine();
+			OpenML::Line2Df* vanishLine = nullptr;
 
-			/*
-			OpenML::Line2Df* vanishLine = new OpenML::Line2Df;
-			vanishLine->point1 = Vec2f(1648.97009f, 1199.88416f);
-			vanishLine->point2 = Vec2f(-923.694580f, 1174.09302f);
-			*/
+			if (isDebug) 
+			{
+				vanishLine = new OpenML::Line2Df;
+				vanishLine->point1 = Vec2f(1648.97009f, 1199.88416f);
+				vanishLine->point2 = Vec2f(-923.694580f, 1174.09302f);
+			}
+			else
+				vanishLine = getVanishLine();
 
 			Vec3f x0 = Vec3f(vanishLine->point1.x(), vanishLine->point1.y(), 1.0f);
 			Vec3f x1 = Vec3f(vanishLine->point2.x(), vanishLine->point2.y(), 1.0f);
@@ -283,28 +282,36 @@ void Renderer::onKeyDown(int keyCode)
 		}
 		else 
 		{
-			OpenML::Line2Df linha1 = listLines[0]->toOpenMLLine2D();
-			OpenML::Line2Df linha3 = listLines[1]->toOpenMLLine2D();
-			OpenML::Line2Df linha2 = listLines[2]->toOpenMLLine2D();
-			OpenML::Line2Df linha4 = listLines[3]->toOpenMLLine2D();
+			OpenML::Line2Df linha1;
+			OpenML::Line2Df linha3;
+			OpenML::Line2Df linha2;
+			OpenML::Line2Df linha4;
 
-			/*
-			Vec2f linha1Point1 = Vec2f(471.0f, 338.0f);
-			Vec2f linha1Point2 = Vec2f(366.0f, 260.0f);
-			OpenML::Line2Df linha1 = OpenML::Line2Df(linha1Point1, linha1Point2);			
+			if (isDebug) 
+			{
+				Vec2f linha1Point1 = Vec2f(471.0f, 338.0f);
+				Vec2f linha1Point2 = Vec2f(366.0f, 260.0f);
+				linha1 = OpenML::Line2Df(linha1Point1, linha1Point2);
 
-			Vec2f linha2Point1 = Vec2f(366.0f, 260.0f);
-			Vec2f linha2Point2 = Vec2f(452.0f, 152.0f);
-			OpenML::Line2Df linha2 = OpenML::Line2Df(linha2Point1, linha2Point2);			
+				Vec2f linha2Point1 = Vec2f(366.0f, 260.0f);
+				Vec2f linha2Point2 = Vec2f(452.0f, 152.0f);
+				linha2 = OpenML::Line2Df(linha2Point1, linha2Point2);
 
-			Vec2f linha3Point1 = Vec2f(257.0f, 178.0f);
-			Vec2f linha3Point2 = Vec2f(358.0f, 53.0f);
-			OpenML::Line2Df linha3 = OpenML::Line2Df(linha3Point1, linha3Point2);			
+				Vec2f linha3Point1 = Vec2f(257.0f, 178.0f);
+				Vec2f linha3Point2 = Vec2f(358.0f, 53.0f);
+				linha3 = OpenML::Line2Df(linha3Point1, linha3Point2);
 
-			Vec2f linha4Point1 = Vec2f(255.0f, 180.0f);
-			Vec2f linha4Point2 = Vec2f(140.0f, 95.0f);
-			OpenML::Line2Df linha4 = OpenML::Line2Df(linha4Point1, linha4Point2);
-			*/
+				Vec2f linha4Point1 = Vec2f(255.0f, 180.0f);
+				Vec2f linha4Point2 = Vec2f(140.0f, 95.0f);
+				linha4 = OpenML::Line2Df(linha4Point1, linha4Point2);
+			}
+			else 
+			{
+				linha1 = listLines[0]->toOpenMLLine2D();
+				linha3 = listLines[1]->toOpenMLLine2D();
+				linha2 = listLines[2]->toOpenMLLine2D();
+				linha4 = listLines[3]->toOpenMLLine2D();
+			}
 
 			Vec2f l1 = linha1.toRay();
 			Vec2f m1 = linha2.toRay();
@@ -342,16 +349,19 @@ void Renderer::onKeyDown(int keyCode)
 				0.0f, 0.0f, 1.0f
 			};
 
-			tempHomographyMatrix *= Mat3f::createScale(0.5f, 0.5f, 1.0f);
+			if (isDebug)
+				tempHomographyMatrix *= Mat3f::createScale(0.5f, 0.5f, 1.0f);
 
 			tempHomographyMatrix = mHp * tempHomographyMatrix;
 						
 			tempHomographyMatrix = tempHomographyMatrix.invert();
+
+			
 		}
 	}
 	else if (homeworkMode == 2.5f)
 	{
-	pxe::Line2D * line1 = new pxe::Line2D;
+		pxe::Line2D * line1 = new pxe::Line2D;
 		line1->setPoint1({ 66.0f, 374.0f });
 		line1->setPoint2({ 69.0f, 439.0f });
 		

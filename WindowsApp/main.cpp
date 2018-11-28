@@ -85,6 +85,13 @@ int main(int argc, char *argv[])
 	windowsDevice->init(window);
 	
 	Renderer* renderer = new Renderer;
+
+	if (argc > 1)
+		renderer->homeworkMode = float((int)*argv[1] - 48);
+
+	if (argc > 2 && *argv[2] == 'D')
+		renderer->isDebug = true;
+
 	renderer->init(monitor);
 
 	renderer->addInputDevice(mouse);
