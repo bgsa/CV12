@@ -157,6 +157,8 @@ bool Panel::hasBackgroundImage()
 
 void Panel::initVBO()
 {	
+	cout << "vbo1" << endl;
+
 	glGenBuffers(1, &vertexBufferObject);  //aloca o buffr
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject); //associa o bufffer ao ponteiro
 	glBufferData(GL_ARRAY_BUFFER, sizeof(PanelShaderAttributes), &panelAttributes, GL_STATIC_DRAW);  //insere os dados no buffer para usar glDraw*
@@ -164,6 +166,7 @@ void Panel::initVBO()
 	projectionViewLocation = glGetUniformLocation(programShader, "projectionView");
 	modelViewLocation = glGetUniformLocation(programShader, "model");	
 	colorLocation = glGetUniformLocation(programShader, "Color");
+	cout << "vbo2" << endl;
 	
 	positionAttribute = glGetAttribLocation(programShader, "Position");
 	textureAttribute = glGetAttribLocation(programShader, "Texture");
@@ -172,10 +175,17 @@ void Panel::initVBO()
 	inverseHomographyMatrixLocation = glGetUniformLocation(programShader, "inverseHomographyMatrix");
 	
 	setUpPositionAttribute();
+
+	cout << "vbo3" << endl;
+
 	setUpTextureAttribute();
+
+	cout << "vbo4" << endl;
 		
 	if (hasBackgroundImage())
 		setUpImage(backgroundImage);
+
+	cout << "vbo5" << endl;
 }
 
 void Panel::render(Mat4f projectionViewMatrix)
