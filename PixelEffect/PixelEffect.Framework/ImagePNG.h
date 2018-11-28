@@ -127,9 +127,12 @@ public:
 		// init png reading  (ONLY WINDOWS)
 		png_init_io(png_ptr, file);
 #endif
+		cout << "a2.1" << endl;
 
 		//let libpng know you already read the first 8 bytes
 		png_set_sig_bytes(png_ptr, 8);
+
+		cout << "a2.2" << endl;
 
 		// read all the info up to the image data
 		png_read_info(png_ptr, info_ptr);
