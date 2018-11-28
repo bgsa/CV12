@@ -123,10 +123,10 @@ public:
 #ifdef ANDROID
 		png_set_read_fn(png_ptr, file, png_asset_read);
 #endif				
-#ifdef WINDOWS
+//#ifdef WINDOWS
 		// init png reading  (ONLY WINDOWS)
 		png_init_io(png_ptr, file);
-#endif
+//#endif
 		cout << "a2.1" << endl;
 
 		//let libpng know you already read the first 8 bytes
