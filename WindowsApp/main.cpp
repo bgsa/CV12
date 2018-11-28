@@ -28,6 +28,7 @@
 
 int main(int argc, char *argv[])
 {
+	cout << "1" << endl;
 	GLFWwindow* window;
 	DisplayDeviceWindow* monitor = new DisplayDeviceWindow;
 	KeyboardInputDeviceWindows* keyboard = new KeyboardInputDeviceWindows;
@@ -76,6 +77,8 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
+	cout << "2" << endl;
+
 	monitor->init(window);
 
 	keyboard->init(window);
@@ -85,6 +88,8 @@ int main(int argc, char *argv[])
 	windowsDevice->init(window);
 	
 	Renderer* renderer = new Renderer;
+
+	cout << "3" << endl;
 
 	if (argc > 1)
 		renderer->homeworkMode = float((int)*argv[1] - 48);
@@ -102,8 +107,12 @@ int main(int argc, char *argv[])
 	mouse->addHandler(renderer);
 	windowsDevice->addHandler(renderer);
 
+	cout << "4" << endl;
+
 	renderer->resize(width, height);
 	renderer->start();
+
+	cout << "5" << endl;
 	
 	delete renderer;
 
