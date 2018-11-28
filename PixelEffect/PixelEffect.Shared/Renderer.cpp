@@ -563,7 +563,6 @@ void Renderer::onMouseUp(MouseEvent e)
 
 void Renderer::start()
 {
-#ifdef WINDOWS
 	while (isRunning)
 	{
 		update();
@@ -571,7 +570,6 @@ void Renderer::start()
 
 		Log::glErrors(__FILE__, __LINE__);
 	}
-#endif
 }
 
 void Renderer::addGraphicObject(GraphicObject* graphicObject)
