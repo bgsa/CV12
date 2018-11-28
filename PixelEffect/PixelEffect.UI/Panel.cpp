@@ -110,11 +110,17 @@ void Panel::setUpTextureAttribute()
 
 void Panel::setUpImage(string filename)
 {
+	cout << "i1" << endl;
+
+	cout << filename << endl;
+
 	Image *image = ImageFactory::load(filename.c_str());
 	unsigned char* pixels = image->getData();
 	GLsizei width = image->getWidth();
 	GLsizei height = image->getHeight();
 	GLenum colorFormat = image->getColorFormat();
+
+	cout << "i2" << endl;
 
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
