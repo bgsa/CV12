@@ -29,6 +29,11 @@
 int main(int argc, char *argv[])
 {
 	cout << "1" << endl;
+
+	FILE *file = fopen("resources/images/brahma01.png", "rb");
+	//fread(header, 1, 8, file);
+	cout << "1.1" << endl;
+
 	GLFWwindow* window;
 	DisplayDeviceWindow* monitor = new DisplayDeviceWindow;
 	KeyboardInputDeviceWindows* keyboard = new KeyboardInputDeviceWindows;

@@ -115,6 +115,7 @@ void Panel::setUpImage(string filename)
 	cout << filename << endl;
 
 	Image *image = ImageFactory::load(filename.c_str());
+	cout << "i1.1" << endl;
 	unsigned char* pixels = image->getData();
 	GLsizei width = image->getWidth();
 	GLsizei height = image->getHeight();
