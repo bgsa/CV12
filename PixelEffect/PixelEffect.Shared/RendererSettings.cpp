@@ -17,10 +17,10 @@ RendererSettings* RendererSettings::getInstance()
 OpenML::Rectangle2Df RendererSettings::getScreenBound()
 {
 	return OpenML::Rectangle2Df(
-		OpenML::Point2Df(0.0f, 0.0f),
-		OpenML::Point2Df(float(width), 0.0f),
-		OpenML::Point2Df(float(width), float(height)),
-		OpenML::Point2Df(0.0f, float(height))
+		Vec2f(0.0f, 0.0f),
+		Vec2f(float(width), 0.0f),
+		Vec2f(float(width), float(height)),
+		Vec2f(0.0f, float(height))
 	);
 }
 

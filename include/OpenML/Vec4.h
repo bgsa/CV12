@@ -1,408 +1,232 @@
 #pragma once
 
-#include "GlobalHeader.h"
-#include <cassert>
-#include "MathPP.h"
-#include "Vec3.h"
+#include "OpenML.h"
 
+namespace OpenML
+{
 #define VEC4_SIZE 4
 
-template <typename T>
-class Vec4
-{
-private:
-	T values[VEC4_SIZE];
-
-public:
-
-	Vec4() { 
-		values[0] = 0;
-		values[1] = 0;
-		values[2] = 0;
-		values[3] = 0;
-	}
-
-	Vec4(Vec3<T> vector, T w) { 
-		values[0] = vector.x();;
-		values[1] = vector.y();
-		values[2] = vector.z();
-		values[3] = w;
-	}
-
-	Vec4(T x, T y, T z, T w) {
-		values[0] = x;
-		values[1] = y;
-		values[2] = z;
-		values[3] = w;
-	}
-
-	/// <summary>
-	/// First value in the vector
-	/// </summary>
-	API_INTERFACE
-	T x() {
-		return values[0];
-	}
-
-	/// <summary>
-	/// Second value in the vector
-	/// </summary>
-	API_INTERFACE
-	T y() {
-		return values[1];
-	}
-
-	/// <summary>
-	/// Third value in the vector
-	/// </summary>
-	API_INTERFACE
-	T z() {
-		return values[2];
-	}
-
-	/// <summary>
-	/// Fourth value in the vector
-	/// </summary>
-	API_INTERFACE
-	T w() {
-		return values[3];
-	}
-
-	/// <summary>
-	/// Get the component values in the vector
-	/// </summary>
-	API_INTERFACE
-	T* getValues() {
-		return values;
-	}
-
-	/// <summary>
-	/// Get the length / norma from the vector -> ||v||
-	/// </summary>
-	API_INTERFACE
-	T length()
+	template <typename T>
+	class Vec4
 	{
-		return sqrtf(squared());
-	}
+	private:
+		T values[VEC4_SIZE];
 
-	/// <summary>
-	/// Get the squared of the vector. It means the Vector Pow2 -> x^2 + y^2 + z^2 + w^2
-	/// </summary>
-	API_INTERFACE
-	T squared()
-	{
-		return (values[0] * values[0]) + (values[1] * values[1]) + (values[2] * values[2]) + (values[3] * values[3]);
-	}
+	public:
 
+		/// <summary>
+		/// Default constructor
+		/// Optional default value 0.0
+		/// </summary>
+		API_INTERFACE inline Vec4(T defaultValue = T(0));
+		
+		/// <summary>
+		/// Set all components X and Y with the primer vector and Z and W components with latter vector
+		/// </summary>
+		API_INTERFACE Vec4(Vec2<T> xyComponents, Vec2<T> zwComponents);
+		
+		/// <summary>
+		/// Constructor with a vector and a W homogeneous coordinate
+		/// </summary>
+		API_INTERFACE inline Vec4(const Vec3<T>& vector, T w);
+		/// <summary>
+		/// Constructor with scalar values
+		/// </summary>
+		API_INTERFACE inline Vec4(T x, T y, T z, T w);
+		
+		/// <summary>
+		/// First value in the vector / X coordinate
+		/// </summary>
+		API_INTERFACE inline T x() const;
 
-	/// <summary>
-	/// Get the maximun value in the vector
-	/// </summary>
-	API_INTERFACE T maximum()
-	{
-		T value = values[0];
+		/// <summary>
+		/// Second value in the vector / Y coordinate
+		/// </summary>
+		API_INTERFACE inline T y() const;
 
-		for (size_t i = 1; i < 4; i++)
-			if (values[i] > value)
-				value = values[i];
+		/// <summary>
+		/// Third value in the vector / Z coordinate
+		/// </summary>
+		API_INTERFACE inline T z() const;
 
-		return value;
-	}
+		/// <summary>
+		/// Fourth value in the vector / W coordinate
+		/// </summary>
+		API_INTERFACE inline T w() const;
 
-	/// <summary>
-	/// Get the min value in the vector
-	/// </summary>
-	API_INTERFACE T minimum()
-	{
-		T value = values[0];
+		/// <summary>
+		/// Get the component values in the vector
+		/// </summary>
+		API_INTERFACE inline T* getValues();
 
-		for (size_t i = 1; i < 4; i++)
-			if (values[i] < value)
-				value = values[i];
+		/// <summary>
+		/// Get the length / norma from the vector -> ||v||
+		/// </summary>
+		API_INTERFACE inline T length() const;
 
-		return value;
-	}
+		/// <summary>
+		/// Get the squared of the vector. It means the Vector Pow2 -> x^2 + y^2 + z^2 + w^2
+		/// </summary>
+		API_INTERFACE inline T squared() const;
 
-	/// <summary>
-	/// Add a vector from current vector
-	/// </summary>
-	API_INTERFACE
-	void add(Vec4<T> vector)
-	{
-		values[0] += vector[0];
-		values[1] += vector[1];
-		values[2] += vector[2];
-		values[3] += vector[3];
-	}
+		/// <summary>
+		/// Get the maximun value in the vector
+		/// </summary>
+		API_INTERFACE inline T maximum() const;
 
-	/// <summary>
-	/// Subtract a vector from current vector
-	/// </summary>
-	API_INTERFACE
-	void subtract(Vec4<T> vector)
-	{
-		values[0] -= vector[0];
-		values[1] -= vector[1];
-		values[2] -= vector[2];
-		values[3] -= vector[3];
-	}
+		/// <summary>
+		/// Get the min value in the vector
+		/// </summary>
+		API_INTERFACE inline T minimum() const;
 
-	/// <summary>
-	/// Scale the vector from a scalar => v * scalar
-	/// </summary>
-	API_INTERFACE
-	void scale(T scale)
-	{
-		values[0] *= scale;
-		values[1] *= scale;
-		values[2] *= scale;
-		values[3] *= scale;
-	}
-	
-	/// <summary>
-	/// Dot Product / Scalar Product - return the angle between two vectors: A . B
-	/// return u dot v
-	/// <summary>
-	API_INTERFACE
-	T dot(Vec4<T> vector)
-	{
-		return values[0] * vector[0] + values[1] * vector[1] + values[2] * vector[2] + values[3] * vector[3];
-	}
+		/// <summary>
+		/// Add a vector from current vector
+		/// </summary>
+		API_INTERFACE inline void add(const Vec4<T>& vector);
 
-	/// <summary>
-	/// Get the andle in radians between the vectors
-	/// <summary>
-	API_INTERFACE
-	T angleRandians(Vec4<T> vectorB)
-	{
-		return dot(vectorB) / (length() * vectorB.length());
-	}
+		/// <summary>
+		/// Subtract a vector from current vector
+		/// </summary>
+		API_INTERFACE inline void subtract(const Vec4<T>& vector);
 
-	/// <summary>
-	/// Get the andle in radians between the vectors
-	/// <summary>
-	API_INTERFACE
-	T angleDegree(Vec4<T> vectorB)
-	{
-		T angleRadians = dot(vectorB) / (length() * vectorB.length());
+		/// <summary>
+		/// Scale the vector from a scalar => v * scalar
+		/// </summary>
+		API_INTERFACE inline void scale(T scale);
 
-		return (T)radiansToDegrees(angleRadians);
-	}
+		/// <summary>
+		/// Dot Product / Scalar Product - return the angle between two vectors: A . B
+		/// return u dot v
+		/// <summary>
+		API_INTERFACE inline T dot(const Vec4<T>& vector) const;
 
-	/// <summary>
-	/// Get a normalized vector
-	/// <summary>
-	API_INTERFACE
-	Vec4<T> normalize()
-	{
-		T vectorLength = length();
+		/// <summary>
+		/// Get the andle in radians between the vectors
+		/// <summary>
+		API_INTERFACE inline T angleRandians(const Vec4<T>& vectorB) const;
 
-		return Vec4<T> {
-			values[0] / vectorLength,
-			values[1] / vectorLength,
-			values[2] / vectorLength,
-			values[3] / vectorLength,
-		};
-	}
+		/// <summary>
+		/// Get the andle in radians between the vectors
+		/// <summary>
+		API_INTERFACE inline T angleDegree(const Vec4<T>& vectorB) const;
 
-	/// <summary>
-	/// Normalize the current vector - change to unit vector
-	/// <summary>
-	API_INTERFACE
-	void transformToUnit()
-	{
-		scale(T(1) / length());
-	}
+		/// <summary>
+		/// Get a normalized vector
+		/// <summary>
+		API_INTERFACE inline Vec4<T> normalize() const;
 
-	/// <summary>
-	/// Calculate the distance (Euclidean) from this vector to another one
-	/// <summary>
-	API_INTERFACE
-	T distance(Vec4<T> vector)
-	{
-		T x = values[0] - vector[0];
-		x = x*x;
+		/// <summary>
+		/// Calculate the distance (Euclidean) from this vector to another one
+		/// <summary>
+		API_INTERFACE inline T distance(const Vec4<T>& vector) const;
+		
+		/// <summary>
+		/// Get the fractionals values from the vector (component-wise)
+		/// <summary>
+		API_INTERFACE Vec4<T> fractional();
 
-		T y = values[1] - vector[1];
-		y = y*y;
+		/// <summary>
+		/// Clone the vector to a new instance
+		/// <summary>
+		API_INTERFACE inline Vec4<T> clone() const;
+		
+		/// <summary>
+		/// Clip w component
+		/// <summary>
+		API_INTERFACE Vec3<T> toVec3();
 
-		T z = values[2] - vector[2];
-		z = z*z;
+		/// <summary>
+		/// Multiply the vector to a scalar
+		/// <summary>
+		API_INTERFACE inline Vec4<T> operator*(T value);
+		/// <summary>
+		/// Multiply the vector to a scalar
+		/// <summary>
+		API_INTERFACE inline Vec4<T> operator*(T value) const;
 
-		T w = values[3] - vector[3];
-		w = w*w;
+		/// <summary>
+		/// Multiply this vector to a matrix
+		/// <summary>
+		API_INTERFACE inline Vec4<T> operator*(const Mat4<T>& matrix4x4) const;
 
-		return sqrtf(x + y + z + w);
-	}
+		/// <summary>
+		/// Divide the vector to a scalar
+		/// <summary>
+		API_INTERFACE inline Vec4<T> operator/(T value) const;
 
-	/// <summary>
-	/// Clone the vector to a new instance
-	/// <summary>
-	API_INTERFACE
-	Vec4<T> clone()
-	{
-		return Vec4<T>(values[0], values[1], values[2], values[3]);
-	}
+		/// <summary>
+		/// Divide the vector to a scalar
+		/// <summary>
+		API_INTERFACE inline void operator/=(T value);
 
-	/// <summary>
-	/// Multiply the vector to a scalar
-	/// <summary>
-	API_INTERFACE
-	Vec4<T> operator*(T value)
-	{
-		Vec4<T> result;
+		/// <summary>
+		/// Sum this vector to another one
+		/// <summary>
+		API_INTERFACE inline Vec4<T> operator+(const Vec4<T>& vector) const;
 
-		result[0] = values[0] * value;
-		result[1] = values[1] * value;
-		result[2] = values[2] * value;
-		result[3] = values[3] * value;
+		/// <summary>
+		/// Sum a scalar to this vector
+		/// <summary>
+		API_INTERFACE inline Vec4<T> operator+(T value) const;
 
-		return result;
-	}
+		/// <summary>
+		/// Subtract this vector to another one
+		/// <summary>
+		API_INTERFACE inline Vec4<T> operator-(const Vec4<T>& vector) const;
 
-	/// <summary>
-	/// Sum this vector to another one
-	/// <summary>
-	API_INTERFACE
-	Vec4<T> operator+(Vec4<T> vector)
-	{
-		Vec4<T> result;
+		/// <summary>
+		/// Subtract a scalar from this vector
+		/// <summary>
+		API_INTERFACE inline Vec4<T> operator-(T value) const;
 
-		result[0] = values[0] + vector[0];
-		result[1] = values[1] + vector[1];
-		result[2] = values[2] + vector[2];
-		result[3] = values[3] + vector[3];
+		/// <summary>
+		/// Compare this vector to another one. Compare each component.
+		/// <summary>
+		API_INTERFACE inline bool operator==(const Vec4<T>& vector) const;
 
-		return result;
-	}
+		/// <summary>
+		/// Compare this vector to another one. Compare each component.
+		/// <summary>
+		API_INTERFACE inline bool operator==(T value) const;
 
-	/// <summary>
-	/// Sum a scalar to this vector
-	/// <summary>
-	API_INTERFACE
-	Vec4<T> operator+(T value)
-	{
-		Vec4<T> result;
+		/// <summary>
+		/// Compare this vector to another one. Compare each component.
+		/// <summary>
+		API_INTERFACE inline bool operator!=(const Vec4<T>& vector) const;
 
-		result[0] = values[0] + value;
-		result[1] = values[1] + value;
-		result[2] = values[2] + value;
-		result[3] = values[3] + value;
+		/// <summary>
+		/// Get a index from the vector
+		/// <summary>
+		API_INTERFACE inline T& operator[](int index);
+		/// <summary>
+		/// Get a index from the vector
+		/// <summary>
+		API_INTERFACE inline T operator[](int index) const;
+		
+		/// <summary>
+		/// Auto convertion to void *
+		/// </summary>
+		API_INTERFACE inline operator void*() const;
+		/// <summary>
+		/// Auto convertion to void *
+		/// </summary>
+		API_INTERFACE inline operator void*();
 
-		return result;
-	}
+		/// <summary>
+		/// Auto convertion to T *
+		/// It is the same of convertion to float* or int* or double*, whatever T is.
+		/// </summary>
+		API_INTERFACE inline operator T*();
 
-	/// <summary>
-	/// Subtract this vector to another one
-	/// <summary>
-	API_INTERFACE
-	Vec4<T> operator-(Vec4<T> vector)
-	{
-		Vec4<T> result;
+		/// <summary>
+		/// Convert to Vec3 - ignore the W component
+		/// <summary>
+		API_INTERFACE inline Vec3<T> toVec3() const;
 
-		result[0] = values[0] - vector[0];
-		result[1] = values[1] - vector[1];
-		result[2] = values[2] - vector[2];
-		result[3] = values[3] - vector[3];
+	};
 
-		return result;
-	}
+	typedef Vec4<int> Vec4i;
+	typedef Vec4<float> Vec4f;
+	typedef Vec4<double> Vec4d;
 
-	/// <summary>
-	/// Subtract a scalar from this vector
-	/// <summary>
-	API_INTERFACE
-	Vec4<T> operator-(T value)
-	{
-		Vec4<T> result;
-
-		result[0] = values[0] - value;
-		result[1] = values[1] - value;
-		result[2] = values[2] - value;
-		result[3] = values[3] - value;
-
-		return result;
-	}
-
-	/// <summary>
-	/// Compare this vector to another one. Compare each component.
-	/// <summary>
-	API_INTERFACE
-	bool operator==(Vec4<T> vector)
-	{
-		return values[0] == vector[0]
-			&& values[1] == vector[1]
-			&& values[2] == vector[2]
-			&& values[3] == vector[3];
-	}
-
-	/// <summary>
-	/// Compare this vector to another one. Compare each component.
-	/// <summary>
-	API_INTERFACE
-	bool operator==(T value)
-	{
-		return values[0] == value
-			&& values[1] == value
-			&& values[2] == value
-			&& values[3] == value;
-	}
-
-	/// <summary>
-	/// Compare this vector to another one. Compare each component.
-	/// <summary>
-	API_INTERFACE
-	bool operator!=(Vec4<T> vector)
-	{
-		return values[0] != vector[0]
-			|| values[1] != vector[1]
-			|| values[2] != vector[2]
-			|| values[3] != vector[3];
-	}
-
-	/// <summary>
-	/// Get a index from the vector
-	/// <summary>
-	API_INTERFACE
-	T& operator[](int index)
-	{
-		assert(index >= 0 && index < VEC4_SIZE);
-
-		return values[index];
-	}
-
-	/// <summary>
-	/// Auto convertion to void *
-	/// </summary>
-	API_INTERFACE operator void*() const
-	{
-		return values;
-	}
-
-	/// <summary>
-	/// Auto convertion to T *
-	/// It is the same of convertion to float* or int* or double*, whatever T is.
-	/// </summary>
-	API_INTERFACE operator T*()
-	{
-		return values;
-	}
-
-	/// <summary>
-	/// Convert to Vec3 - ignore the W component
-	/// <summary>
-	API_INTERFACE
-	Vec3<T> toVec3() {
-		return Vec3<T> { values[0], values[1], values[2] };
-	}
-
-};
-
-typedef Vec4<unsigned char> Vec4uc;
-typedef Vec4<unsigned int> Vec4ui;
-typedef Vec4<unsigned short> Vec4us;
-typedef Vec4<char> Vec4c;
-typedef Vec4<short> Vec4s;
-typedef Vec4<int> Vec4i;
-typedef Vec4<float> Vec4f;
-typedef Vec4<double> Vec4d;
+}

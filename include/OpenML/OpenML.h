@@ -54,10 +54,11 @@ namespace OpenML
 		return nPow2;
 	}
 
+	/*
 	///<summary>
 	///Get the next number power of 2
 	///</summary>
-	inline unsigned int API_INTERFACE nextPowOf2(int value)
+	API_INTERFACE inline unsigned int  nextPowOf2(int value)
 	{
 		int rval = 1;
 
@@ -66,6 +67,7 @@ namespace OpenML
 
 		return rval;
 	}
+	*/
 		
 	///<summary>
 	///Round the number given a amount of decimals

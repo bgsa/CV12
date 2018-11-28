@@ -61,14 +61,14 @@ public:
 		this->color->Alpha = color.Alpha;
 	}
 
-	virtual OpenML::Point2Df getPosition()
+	virtual Vec2f getPosition()
 	{
 		return { modelView[12], modelView[13] };
 	}
-	virtual void setPosition(OpenML::Point2Df position)
+	virtual void setPosition(Vec2f position)
 	{
-		modelView[12] = position.x;
-		modelView[13] = position.y;
+		modelView[12] = position.x();
+		modelView[13] = position.y();
 	}
 	
 	virtual void setBotomMargin(float bottomMargin)

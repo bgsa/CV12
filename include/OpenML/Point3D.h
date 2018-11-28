@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vec3.h"
+#include "OpenML.h"
 
 namespace OpenML 
 {
@@ -8,54 +8,79 @@ namespace OpenML
 	class Point3D
 	{
 	public:
-		T x = 0.0f;
-		T y = 0.0f;
-		T z = 0.0f;
+		T x = T(0);
+		T y = T(0);
+		T z = T(0);
 
-		Point3D() {
-		}
-		Point3D(T x, T y, T z) {
-			this->x = x;
-			this->y = y;
-			this->z = z;
-		}
-		Point3D(Vec3<T> vector) {
-			this->x = vector[0];
-			this->y = vector[1];
-			this->z = vector[2];
-		}
-		Point3D(T* values) {
-			this->x = values[0];
-			this->y = values[1];
-			this->z = values[2];
-		}
+		/// <summary>
+		/// Default constructor (0,0,0)
+		/// </summary>
+		API_INTERFACE Point3D();
 
-		T distance(Point3D<T> otherPoint) 
-		{
-			T distance = toVec3().distance(otherPoint.toVec3());
-			return distance;
-		}
+		/// <summary>
+		/// Constructor with args
+		/// </summary>
+		API_INTERFACE Point3D(T x, T y, T z);
 
-		operator Vec3<T>&()
-		{
-			return Vec3<T>(x, y, z);
-		}
+		/// <summary>
+		/// Constructor from a 3D vector
+		/// </summary>
+		API_INTERFACE Point3D(const Vec3<T>& vector);
 
-		Vec3<T> toVec3()
-		{
-			return Vec3<T>(x, y, z);
-		}
+		/// <summary>
+		/// Constructor with values as array
+		/// </summary>
+		API_INTERFACE Point3D(T* values);
+
+		/// <summary>
+		/// Get the distance between two 3D points
+		/// </summary>
+		API_INTERFACE T distance(const Point3D<T>& otherPoint) const;
+
+		/// <summary>
+		/// Convert to a 3D vector
+		/// </summary>
+		API_INTERFACE Vec3<T> toVec3() const;
 
 		/// <summary>
 		/// Compare this point to another one. Compare each component.
 		/// </summary>
-		API_INTERFACE bool operator==(const Point3D<T> &other) const
-		{
-			return x == other.x
-				&& y == other.y
-				&& z == other.z;
-		}
+		bool API_INTERFACE operator==(const Point3D<T> &other) const;
 
+		/// <summary>
+		/// Compare this point to another one. Compare each component.
+		/// </summary>
+		bool API_INTERFACE operator!=(const Point3D<T> &other) const;
+
+		/// <summary>
+		/// Find the point that contain the minimum X value
+		/// </summary>		
+		static Point3D<T> API_INTERFACE findMinX(Point3D<T>* points, size_t pointsCount);
+
+		/// <summary>
+		/// Find the point that contain the minimum Y value
+		/// </summary>		
+		static Point3D<T> API_INTERFACE findMinY(Point3D<T>* points, size_t pointsCount);
+
+		/// <summary>
+		/// Find the point that contain the minimum Z value
+		/// </summary>		
+		static Point3D<T> API_INTERFACE findMinZ(Point3D<T>* points, size_t pointsCount);
+
+		/// <summary>
+		/// Find the point that contain the maximum X value
+		/// </summary>		
+		static Point3D<T> API_INTERFACE findMaxX(Point3D<T>* points, size_t pointsCount);
+
+		/// <summary>
+		/// Find the point that contain the maximum Y value
+		/// </summary>		
+		static Point3D<T> API_INTERFACE findMaxY(Point3D<T>* points, size_t pointsCount);
+
+		/// <summary>
+		/// Find the point that contain the maximum Y value
+		/// </summary>		
+		static Point3D<T> API_INTERFACE findMaxZ(Point3D<T>* points, size_t pointsCount);
 	};
 
 	typedef Point3D<int> Point3Di;

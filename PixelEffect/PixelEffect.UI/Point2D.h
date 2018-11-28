@@ -6,34 +6,37 @@
 
 #include "GraphicObject2D.h"
 
-class Point2D : public GraphicObject2D
-{
-private:
-	GLfloat position[2];
-	
-	GLint positionAttribute;
-	GLint pointSizeLocation;
+namespace pxe {
+	class Point2D : public GraphicObject2D
+	{
+	private:
+		GLfloat position[2];
 
-	float pointSize = 3.0f;
+		GLint positionAttribute;
+		GLint pointSizeLocation;
 
-	void initVBO();
-	void setUpPositionAttribute();
+		float pointSize = 3.0f;
 
-public:
-	Point2D();
-	Point2D(OpenML::Point2Df point);
+		void initVBO();
+		void setUpPositionAttribute();
 
-	void init();
+	public:
+		Point2D();
+		Point2D(OpenML::Point2Df point);
 
-	float getPointSize();
-	void setPointSize(float newPointSize);
+		void init();
 
-	OpenML::Point2Df getPosition();
-	void setPosition(OpenML::Point2Df position);
-		
-	void render(Mat4f projectionViewMatrix);
+		float getPointSize();
+		void setPointSize(float newPointSize);
 
-	string toString() {
-		return "Point 2D";
-	}
-};
+		Vec2f getPosition();
+		void setPosition(Vec2f position);
+
+		void render(Mat4f projectionViewMatrix);
+
+		string toString() {
+			return "Point 2D";
+		}
+	};
+
+}

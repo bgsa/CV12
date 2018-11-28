@@ -60,7 +60,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>OpenGL32.lib;glfw3.lib;glew32s.lib;zlib.lib;libpng16.lib;OpenML.Win32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;glfw3.lib;glew32s.lib;zlib.lib;libpng16.lib;OpenML.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>.\..\lib\x86\Debug;C:\Program Files %28x86%29\OpenAL 1.1 SDK\libs\Win32;.\..\lib\x86\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LinkTimeCodeGeneration>
       </LinkTimeCodeGeneration>
@@ -69,8 +69,7 @@
       </SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(MSBuildProjectDirectory)\..\lib\x86\Debug\*.dll" "$(OutputPath)"
-xcopy /y "$(MSBuildProjectDirectory)\..\..\OpenML\bin\x86\Debug\*.dll" "$(OutputPath)"</Command>
+      <Command>xcopy /y "$(MSBuildProjectDirectory)\..\lib\x86\Debug\*.dll" "$(OutputPath)"</Command>
       <Message>Copy DLLs to output folder</Message>
     </PostBuildEvent>
     <PreBuildEvent>

@@ -1,37 +1,50 @@
 #pragma once
 
 #include "GlobalHeader.h"
+#include "Mat3.h"
 #include <iomanip>
 
-template <typename T>
-class Mat
+namespace OpenML
 {
-protected:
-
-	static string toString(T * data, int size, int precision = 4)
+	template <typename T>
+	class Mat
 	{
-		string content;
-		size_t total = (int)(size * size);
+	protected:
 
-		for (size_t i = 0; i < total; i++)
+		string toString(T* values, int size, int precision = 4)
 		{
-			stringstream stream;
-			stream << fixed << setprecision(precision) << data[i];
-			string numberAsString = stream.str();
+			string content;
+			size_t total = (int)(size * size);
 
-			bool isPositive = data[i] >= 0;
+			for (size_t i = 0; i < total; i++)
+			{
+				stringstream stream;
+				stream << fixed << setprecision(precision) << values[i];
+				string numberAsString = stream.str();
 
-			if (isPositive)
-				numberAsString = " " + numberAsString;
+				bool isPositive = values[i] >= 0;
 
-			content += " " + numberAsString + " ";
+				if (isPositive)
+					numberAsString = " " + numberAsString;
 
-			if ((i + 1) % size == 0)
-				content += '\n';
+				content += " " + numberAsString + " ";
+
+				if ((i + 1) % size == 0)
+					content += '\n';
+			}
+
+			return content;
 		}
+			
+	public:
 
-		return content;
-	}
+		static void gaussianElimination(T *matrix, int rowSize);
 
-};
+		/// <summary>
+		/// Get the Homography Matrix (the transformation perspective matrix from a plane to another one)
+		/// <summary>
+		static Mat3<T> getPerspectiveTransform2D(Vec2<T> sourcePoints[4], Vec2<T> targetPoints[4]);	
 
+	};
+	
+}

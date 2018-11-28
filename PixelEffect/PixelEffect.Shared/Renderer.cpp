@@ -28,14 +28,15 @@ Timer timer;
 Camera camera;
 
 Panel* panel = nullptr;
-std::vector<Point2D*> points;
-Line2D* currentLine = nullptr;
-std::vector<Line2D*> listLines;
+std::vector<pxe::Point2D*> points;
+pxe::Line2D* currentLine = nullptr;
+std::vector<pxe::Line2D*> listLines;
 Vec3f l = Vec3f(8.47174670e-06f, -0.000845056260f, 1.0f);
 
 SystemOfLinearEquations<float> linearEquation;
 
-float homeworkMode = 2.5f;
+//float homeworkMode = 2.5f;
+float homeworkMode = 2.0f;
 int step = 1;
 
 Mat3f mHp = {
@@ -173,26 +174,26 @@ Mat3f getAffineTransform(std::vector<Vec2f> sourcePoints)
 
 OpenML::Line2Df* Renderer::getVanishLine() 
 {
-	std::vector<OpenML::Point2Df> intersectionPoints;
+	std::vector<Vec2f> intersectionPoints;
 
 	for (size_t i = 0; i < listLines.size(); i += 2)
 	{
 		OpenML::Line2Df line1 = listLines[i]->toOpenMLLine2D();
 		OpenML::Line2Df line2 = listLines[i + 1]->toOpenMLLine2D();
 
-		OpenML::Point2Df line2Point1 = line2.point1;
-		OpenML::Point2Df line2Point2 = line2.point2;
+		Vec2f line2Point1 = line2.point1;
+		Vec2f line2Point2 = line2.point2;
 
-		float determinant = (line2Point2.x - line2Point1.x) * (line1.point2.y - line1.point1.y) - (line2Point2.y - line2Point1.y) * (line1.point2.x - line1.point1.x);
+		float determinant = (line2Point2.x() - line2Point1.x()) * (line1.point2.y() - line1.point1.y()) - (line2Point2.y() - line2Point1.y()) * (line1.point2.x() - line1.point1.x());
 
 		if (determinant == 0.0)
 			return nullptr; // intersection not found
 
-		double s = ((line2Point2.x - line2Point1.x) * (line2Point1.y - line1.point1.y) - (line2Point2.y - line2Point1.y) * (line2Point1.x - line1.point1.x)) / determinant;
+		double s = ((line2Point2.x() - line2Point1.x()) * (line2Point1.y() - line1.point1.y()) - (line2Point2.y() - line2Point1.y()) * (line2Point1.x() - line1.point1.x())) / determinant;
 
-		OpenML::Point2Df intersection = OpenML::Point2Df(
-			line1.point1.x + (line1.point2.x - line1.point1.x)* float(s),
-			line1.point1.y + (line1.point2.y - line1.point1.y)* float(s)
+		Vec2f intersection = Vec2f(
+			line1.point1.x() + (line1.point2.x() - line1.point1.x())* float(s),
+			line1.point1.y() + (line1.point2.y() - line1.point1.y())* float(s)
 		);
 
 		intersectionPoints.push_back(intersection);
@@ -238,7 +239,7 @@ void Renderer::onKeyDown(int keyCode)
 		sourcePoints.resize(4);
 
 		for (size_t i = 0; i < 4; i++)
-			sourcePoints[i] = points[i]->getPosition().toVec2();
+			sourcePoints[i] = points[i]->getPosition();
 
 		std::vector<Vec2f> targetPoints = {
 			Vec2f(0.0 , 0.0),
@@ -248,18 +249,22 @@ void Renderer::onKeyDown(int keyCode)
 		};
 
 		tempHomographyMatrix = getPerspectiveTransform(sourcePoints.data(), targetPoints.data());
+		tempHomographyMatrix = tempHomographyMatrix.invert();
 	}
 	else if (homeworkMode == 2.0f)
 	{
 		if (step == 1) 
 		{	
 			OpenML::Line2Df* vanishLine = getVanishLine();
-			//OpenML::Line2Df* vanishLine = new OpenML::Line2Df;
-			//vanishLine->point1 = Vec2f(1648.97009f, 1199.88416f);
-			//vanishLine->point2 = Vec2f(-923.694580f, 1174.09302);
 
-			Vec3f x0 = Vec3f(vanishLine->point1.x, vanishLine->point1.y, 1.0f);
-			Vec3f x1 = Vec3f(vanishLine->point2.x, vanishLine->point2.y, 1.0f);
+			/*
+			OpenML::Line2Df* vanishLine = new OpenML::Line2Df;
+			vanishLine->point1 = Vec2f(1648.97009f, 1199.88416f);
+			vanishLine->point2 = Vec2f(-923.694580f, 1174.09302f);
+			*/
+
+			Vec3f x0 = Vec3f(vanishLine->point1.x(), vanishLine->point1.y(), 1.0f);
+			Vec3f x1 = Vec3f(vanishLine->point2.x(), vanishLine->point2.y(), 1.0f);
 
 			l = x0.cross(x1);
 			l = l / l.z();
@@ -284,20 +289,20 @@ void Renderer::onKeyDown(int keyCode)
 			OpenML::Line2Df linha4 = listLines[3]->toOpenMLLine2D();
 
 			/*
-			OpenML::Point2Df linha1Point1 = OpenML::Point2Df(471.0f, 338.0f);
-			OpenML::Point2Df linha1Point2 = OpenML::Point2Df(366.0f, 260.0f);
+			Vec2f linha1Point1 = Vec2f(471.0f, 338.0f);
+			Vec2f linha1Point2 = Vec2f(366.0f, 260.0f);
 			OpenML::Line2Df linha1 = OpenML::Line2Df(linha1Point1, linha1Point2);			
 
-			OpenML::Point2Df linha2Point1 = OpenML::Point2Df(366.0f, 260.0f);
-			OpenML::Point2Df linha2Point2 = OpenML::Point2Df(452.0f, 152.0f);
+			Vec2f linha2Point1 = Vec2f(366.0f, 260.0f);
+			Vec2f linha2Point2 = Vec2f(452.0f, 152.0f);
 			OpenML::Line2Df linha2 = OpenML::Line2Df(linha2Point1, linha2Point2);			
 
-			OpenML::Point2Df linha3Point1 = OpenML::Point2Df(257.0f, 178.0f);
-			OpenML::Point2Df linha3Point2 = OpenML::Point2Df(358.0f, 53.0f);
+			Vec2f linha3Point1 = Vec2f(257.0f, 178.0f);
+			Vec2f linha3Point2 = Vec2f(358.0f, 53.0f);
 			OpenML::Line2Df linha3 = OpenML::Line2Df(linha3Point1, linha3Point2);			
 
-			OpenML::Point2Df linha4Point1 = OpenML::Point2Df(255.0f, 180.0f);
-			OpenML::Point2Df linha4Point2 = OpenML::Point2Df(140.0f, 95.0f);
+			Vec2f linha4Point1 = Vec2f(255.0f, 180.0f);
+			Vec2f linha4Point2 = Vec2f(140.0f, 95.0f);
 			OpenML::Line2Df linha4 = OpenML::Line2Df(linha4Point1, linha4Point2);
 			*/
 
@@ -346,43 +351,43 @@ void Renderer::onKeyDown(int keyCode)
 	}
 	else if (homeworkMode == 2.5f)
 	{
-		Line2D * line1 = new Line2D;
+	pxe::Line2D * line1 = new pxe::Line2D;
 		line1->setPoint1({ 66.0f, 374.0f });
 		line1->setPoint2({ 69.0f, 439.0f });
 		
-		Line2D * line2 = new Line2D;
+		pxe::Line2D * line2 = new pxe::Line2D;
 		line2->setPoint1({ 69.0f, 439.0f });
 		line2->setPoint2({ 145.0f, 433.0f });
 
-		Line2D * line3 = new Line2D;
+		pxe::Line2D * line3 = new pxe::Line2D;
 		line3->setPoint1({ 235.0f, 425.0f });
 		line3->setPoint2({ 309.0f, 420.0f });
 
-		Line2D * line4 = new Line2D;
+		pxe::Line2D * line4 = new pxe::Line2D;
 		line4->setPoint1({ 309.0f, 420.0f });
 		line4->setPoint2({ 307.0f, 361.0f });
 		 
-		Line2D * line5 = new Line2D;
+		pxe::Line2D * line5 = new pxe::Line2D;
 		line5->setPoint1({ 68.0f, 92.0f });
 		line5->setPoint2({ 152.0f, 96.0f });
 
-		Line2D * line6 = new Line2D;
+		pxe::Line2D * line6 = new pxe::Line2D;
 		line6->setPoint1({ 152.0f, 96.0f });
 		line6->setPoint2({ 152.0f, 187.0f });
 		 
-		Line2D * line7 = new Line2D;
+		pxe::Line2D * line7 = new pxe::Line2D;
 		line7->setPoint1({ 237.0f, 186.0f });
 		line7->setPoint2({ 240.0f, 102.0f });
 
-		Line2D * line8 = new Line2D;
+		pxe::Line2D * line8 = new pxe::Line2D;
 		line8->setPoint1({ 240.0f, 102.0f });
 		line8->setPoint2({ 314.0f, 105.0f });
 
-		Line2D * line9 = new Line2D;
+		pxe::Line2D * line9 = new pxe::Line2D;
 		line9->setPoint1({ 390.0f, 190.0f });
 		line9->setPoint2({ 464.0f, 108.0f });
 
-		Line2D * line10 = new Line2D;
+		pxe::Line2D * line10 = new pxe::Line2D;
 		line10->setPoint1({ 393.0f, 107.0f });
 		line10->setPoint2({ 459.0f, 192.0f });
 
@@ -471,14 +476,14 @@ void Renderer::onKeyDown(int keyCode)
 	panel->homographyMatrix = tempHomographyMatrix;
 	panel->useHomography = 1;
 
-	for (Line2D* line : listLines)
+	for (pxe::Line2D* line : listLines)
 	{
 		removeGraphicObject(line);
 		//delete line;
 	}
 	listLines.clear();
 
-	for (Point2D* point : points)
+	for (pxe::Point2D* point : points)
 	{
 		removeGraphicObject(point);
 		delete point;
@@ -492,8 +497,8 @@ void Renderer::onMouseDown(MouseEvent e)
 		return;
 
 	if (homeworkMode == 1.0f) {
-		Point2D* point = new Point2D();
-		point->setPosition(e.currentPosition);
+		pxe::Point2D* point = new pxe::Point2D();
+		point->setPosition(e.currentPosition.toVec2());
 		point->init();
 		point->setColor({ 1.0f, 0.0f, 0.0f, 1.0f });
 		point->setPointSize(8.0f);
@@ -504,7 +509,7 @@ void Renderer::onMouseDown(MouseEvent e)
 	}
 	else
 	{
-		currentLine = new Line2D;
+		currentLine = new pxe::Line2D;
 		currentLine->setPoint1(e.currentPosition);
 		currentLine->setPoint2(e.currentPosition);
 		currentLine->setColor({ 1.0f, 0.0f, 1.0f, 1.0f });
@@ -531,7 +536,7 @@ void Renderer::onMouseUp(MouseEvent e)
 	{
 		currentLine->setPoint2(e.currentPosition);
 
-		Line2D* newParallelLine = new Line2D;
+		pxe::Line2D* newParallelLine = new pxe::Line2D;
 		newParallelLine->setPoint1(currentLine->getPoint1());
 		newParallelLine->setPoint2(currentLine->getPoint2());
 		newParallelLine->setColor({ 1.0f, 0.0f, 0.0f ,1.0f });
