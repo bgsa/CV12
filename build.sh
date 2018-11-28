@@ -5,3 +5,5 @@ cmake ..
 cmake --build .
 cd ..
 cp -R ./resources ./build/
+cd build
+./PixelEffectLinuxApp 1
