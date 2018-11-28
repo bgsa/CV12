@@ -96,12 +96,18 @@ int main(int argc, char *argv[])
 
 	if (argc > 2 && *argv[2] == 'D')
 		renderer->isDebug = true;
+	
+	cout << "3.1" << endl;
 
 	renderer->init(monitor);
+
+	cout << "3.2" << endl;
 
 	renderer->addInputDevice(mouse);
 	renderer->addInputDevice(keyboard);
 	renderer->addInputDevice(windowsDevice);
+
+	cout << "3.3" << endl;
 
 	keyboard->addHandler(renderer);
 	mouse->addHandler(renderer);
