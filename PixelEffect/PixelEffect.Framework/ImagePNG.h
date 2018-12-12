@@ -116,7 +116,6 @@ public:
 					return 0;
 				}
 		*/
-		cout << "a2" << endl;
 
 #ifdef ANDROID
 		png_set_read_fn(png_ptr, file, png_asset_read);

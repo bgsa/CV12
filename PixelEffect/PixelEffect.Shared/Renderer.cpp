@@ -11,15 +11,6 @@
 #include "OpenML/Rectangle2D.h"
 #include "Panel.h"
 
-/*
-#include "opencv2/core.hpp"
-#include "opencv2/calib3d/calib3d.hpp"
-#include "opencv2/features2d.hpp"
-#include "opencv2/imgproc.hpp"
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/highgui/highgui.hpp>
-*/
-
 #include <OpenML/SystemOfLinearEquations.h>
 
 bool isRunning = true;
@@ -114,59 +105,6 @@ Mat3f getPerspectiveTransform(Vec2f sourcePoints[4], Vec2f targetPoints[4])
 
 	return result;
 }
-
-/*
-//retorna matriz de transformação afim
-Mat3f getAffineTransform(std::vector<Vec2f> sourcePoints)
-{
-	std::vector<cv::Point2f> src;
-	src.resize(3);
-
-	for (size_t i = 0; i < 3; i++)
-	{
-		src[i].x = sourcePoints[i][0];
-		src[i].y = sourcePoints[i][1];
-	}
-
-	std::vector<cv::Point2f> targetPoints = {
-		cv::Point2f(0.0f , 0.0f),
-		cv::Point2f(0.0f,800.0f),
-		cv::Point2f(600.0f, 800.0f)
-	};
-
-	/*
-	cv::Point2f src[3] = {
-		cv::Point2f(146.0f , 378.0f),
-		cv::Point2f(150.0f,120.0f),
-		cv::Point2f(438.0f, 172.0f)
-	};
-
-	cv::Point2f targetPoints[3] = {
-		cv::Point2f(2.0f , 150.0f),
-		cv::Point2f(0.0f,0.0f),
-		cv::Point2f(505.0f, 4.0f)
-	};
-	/
-
-	cv::Mat mat = cv::getAffineTransform(src, targetPoints);
-
-	//cv::transpose(mat, mat);
-
-	Mat3f result = Mat3f::identity();
-
-	for (int i = 0; i < mat.rows; i++)
-		for (int j = 0; j < mat.cols; j++)
-		{
-			cout << (float)mat.data[i * mat.rows + j] << endl;
-			result[i * mat.rows + j] = (float)mat.data[j * mat.cols + i];
-			//result[j * mat.cols + i] = (float)mat.data[i * mat.rows + j];
-		}
-
-	//result = result.transpose();
-
-	return result;
-}
-*/
 
 OpenML::Line2Df* Renderer::getVanishLine() 
 {
