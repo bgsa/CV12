@@ -21,4 +21,4 @@ cd CV12
 ./build/PixelEffectLinux 2
 
 # Obs. 1: No trabalho 1, configurar os 4 pontos começando do canto esquerdo inferior em sentido horário
-# Obs. 2: No trabalho 1, se executar incluindo o parametro "D", executa em modo debug. Sendo assim, não precisa dos clicks na tela, restando apenas pressionar "Enter"
+# Obs. 2: No trabalho 2, se executar incluindo o parametro "D", executa em modo debug. Sendo assim, não precisa dos clicks na tela, restando apenas pressionar "Enter"
